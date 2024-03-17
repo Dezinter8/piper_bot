@@ -9,7 +9,9 @@
 Install those using:
 
 ```
-sudo apt install ros-humble-xacro ros-humble-joint-state-publisher-gui ros-humble-gazebo-ros-pkgs
+sudo apt install ros-humble-xacro ros-humble-joint-state-publisher-gui
+
+sudo apt install ros-humble-gazebo-ros-pkgs
 ```
 
 ## Setup
@@ -23,7 +25,7 @@ mkdir -p piper_ws/src
 
 cd piper_ws/src
 
-git clone https://github.com/Dezinter8/Piper-bot-emulator.git
+git clone https://github.com/Dezinter8/piper_bot.git
 ```
 
 ### Step 2 (build)
@@ -38,7 +40,7 @@ source install/setup.bash
 
 ### Step 3 (run)
 
-1'st terminal (Robot)
+1'st terminal (Robot. Will take a while)
 
 ```
 cd ~/piper_ws
