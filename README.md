@@ -40,7 +40,7 @@ source install/setup.bash
 
 ### Step 3 (run)
 
-1'st terminal (Robot. Will take a while)
+1'st terminal (Robot. Will take a while) - Simulation
 
 ```
 cd ~/piper_ws
@@ -48,29 +48,44 @@ cd ~/piper_ws
 ros2 launch piper_bot launch_sim.launch.py world:=./src/piper_bot/worlds/obstacles.world
 ```
 
-2'nd terminal (Robot)
+2'nd terminal (Robot) - Controlling robot movement
 
 ```
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
 ```
 
-3'rd terminal (best to lauch on dev machine. Can be done on Robot)
+### Step 4 (visualization )
+
+3'rd terminal (best to lauch on dev machine. Can be done on Robot) - Visualization in rviz
+
+On Dev (you need just the config/drive_bot.rviz file):
+
+```
+cd ~
+
+mkdir -p piper_ws/src
+
+cd piper_ws/src
+
+git clone https://github.com/Dezinter8/piper_bot.git
+
+rviz2 -d ~/piper_ws/src/piper_bot/config/drive_bot.rviz
+```
+
+On robot:
 
 ```
 rviz2 -d ~/piper_ws/src/piper_bot/config/drive_bot.rviz
 ```
 
-#### Splitting machines (Dev and robot)
-
-To lauch Rviz on dev machine you might need to redo the whole process. All you need is drive_bot.rviz file, so you can copy it to dev home directory and specify file path in 3'rd comand like so.
-
-```
-rviz2 -d ~/drive_bot.rviz
-```
-
 #### Moving the robot
 
 To move the robot remember that the terminal window used for 2'nd comand has to be an active window.
+
+Moving around:
+u i o
+j k l
+m , .
 
 ### Gazebo error
 
