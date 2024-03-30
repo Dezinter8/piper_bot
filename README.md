@@ -45,6 +45,8 @@ source install/setup.bash
 ```
 cd ~/piper_ws
 
+source install/setup.bash
+
 ros2 launch piper_bot launch_sim.launch.py world:=./src/piper_bot/worlds/obstacles.world
 ```
 
