@@ -9,9 +9,7 @@
 Install those using:
 
 ```
-sudo apt install ros-humble-xacro ros-humble-joint-state-publisher-gui
-
-sudo apt install ros-humble-gazebo-ros-pkgs
+sudo apt install ros-humble-xacro ros-humble-joint-state-publisher-gui ros-humble-gazebo-ros-pkgs
 ```
 
 ## Setup
@@ -34,50 +32,24 @@ git clone https://github.com/Dezinter8/piper_bot.git
 cd ~/piper_ws
 
 colcon build --symlink-install
-
-source install/setup.bash
 ```
 
-### Step 3 (run)
+### Step 3 - Run (Gazebo)
 
-1'st terminal (Robot. Will take a while) - Simulation
+1'st terminal (Robot) - Simulation
 
 ```
 cd ~/piper_ws
 
 source install/setup.bash
 
-ros2 launch piper_bot launch_sim.launch.py world:=./src/piper_bot/worlds/obstacles.world
+ros2 launch piper_bot launch_sim.launch.py world:=./src/piper_bot/worlds/pipe.world
 ```
 
-2'nd terminal (Robot) - Controlling robot movement
+2'nd terminal (Robot/Dev) - Controlling robot movement
 
 ```
 ros2 run teleop_twist_keyboard teleop_twist_keyboard
-```
-
-### Step 4 (visualization )
-
-3'rd terminal (best to lauch on dev machine. Can be done on Robot) - Visualization in rviz
-
-On Dev (you need just the config/drive_bot.rviz file):
-
-```
-cd ~
-
-mkdir -p piper_ws/src
-
-cd piper_ws/src
-
-git clone https://github.com/Dezinter8/piper_bot.git
-
-rviz2 -d ~/piper_ws/src/piper_bot/config/drive_bot.rviz
-```
-
-On robot:
-
-```
-rviz2 -d ~/piper_ws/src/piper_bot/config/drive_bot.rviz
 ```
 
 #### Moving the robot
@@ -89,14 +61,20 @@ u i o
 j k l
 m , .
 
-### Gazebo error
-
-If gazebo is bricked try those comands:
+#### Run (Production)
 
 ```
-pstree
+cd piper_ws/
+
+source install/setup.bash
+
+ros2 launch piper_bot rsp.launch.py
 ```
 
 ```
-killall -9 gzserver gzclient
+rviz2 -d src/piper_bot/config/view_bot.rviz
+```
+
+```
+ros2 run joint_state_publisher_gui joint_state_publisher_gui
 ```

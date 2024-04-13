@@ -4,11 +4,18 @@
     <gazebo>
         <plugin name="diff_drive" filename="libgazebo_ros_diff_drive.so">
 
-            <!-- Wheel Information -->
-            <left_joint>left_wheel_joint</left_joint>
-            <right_joint>right_wheel_joint</right_joint>
-            <wheel_separation>0.35</wheel_separation>
-            <wheel_diameter>0.1</wheel_diameter>
+            <!-- wheels -->
+            <!-- <num_wheel_pairs>2</num_wheel_pairs> -->
+            <left_joint>front_left_wheel_joint</left_joint>
+            <!-- <left_joint>back_left_wheel_joint</left_joint> -->
+            <right_joint>front_right_wheel_joint</right_joint>
+            <!-- <right_joint>back_right_wheel_joint</right_joint> -->
+
+
+            <!-- kinematics -->
+            <wheel_separation>0.14</wheel_separation>
+            <wheel_diameter>0.06</wheel_diameter>
+
 
 
             <!-- Limits -->
@@ -20,9 +27,12 @@
             <odometry_frame>odom</odometry_frame>
             <robot_base_frame>base_link</robot_base_frame>
 
+            <!-- topic & re remappings -->
             <publish_odom>true</publish_odom>
             <publish_odom_tf>true</publish_odom_tf>
             <publish_wheel_tf>true</publish_wheel_tf>
+            
+            <update_rate>100.0</update_rate>
 
         </plugin>
     </gazebo>
