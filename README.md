@@ -78,3 +78,11 @@ rviz2 -d src/piper_bot/config/view_bot.rviz
 ```
 ros2 run joint_state_publisher_gui joint_state_publisher_gui
 ```
+
+### Robot doesn't spawn
+
+After launching gazebo simulation with pipe model inside, don't close the gazebo window. Create new terminal and spawn robot manualy using this command:
+
+```
+ros2 run gazebo_ros spawn_entity.py -topic robot_description -entity bit_name
+```
