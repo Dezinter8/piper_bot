@@ -53,7 +53,7 @@ ros2 launch piper_bot launch_sim.launch.py world:=./src/piper_bot/worlds/pipe.wo
 2'nd terminal (Robot/Dev) - Controlling robot movement
 
 ```
-ros2 run teleop_twist_keyboard teleop_twist_keyboard
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=/diff_cont/cmd_vel_unstamped
 ```
 
 #### Moving the robot
