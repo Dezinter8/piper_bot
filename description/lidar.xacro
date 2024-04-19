@@ -6,7 +6,7 @@
     <joint name="lidar_joint" type="fixed">
         <parent link="chassis"/>
         <child link="laser_link"/>
-        <origin xyz="0.107 0 0.14" rpy="0 -${pi/2} -${pi}"/>
+        <origin xyz="0.11 0 0.14" rpy="0 -${pi/2} -${pi}"/>
     </joint>
 
     <link name="laser_link">
@@ -37,9 +37,9 @@
             <ray>
                 <scan>
                     <horizontal>
-                        <samples>360</samples>
-                        <min_angle>-3.14</min_angle>
-                        <max_angle>3.14</max_angle>
+                        <samples>720</samples>
+                        <min_angle>0</min_angle>
+                        <max_angle>6.28</max_angle>
                     </horizontal>
                 </scan>
                 <range>

@@ -36,15 +36,36 @@ def generate_launch_description():
         output='screen'
     )
 
+    diff_drive_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["diff_cont"],
+    )
+
+    joint_broad_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_broad"],
+    )
+
+
     # Delay the spawn_entity action by 1 second using TimerAction
     delayed_spawn_entity = TimerAction(
         period=1.0,  # Delay period in seconds
         actions=[spawn_entity]
     )
 
+    # Delay the diff_drive and joint_broad by 1 second
+    delayed_spawn = TimerAction(
+        period=1.0,  # Delay period in seconds
+        actions=[diff_drive_spawner,joint_broad_spawner]
+    )
+    
     # Launch the robot_state_publisher, Gazebo, and the delayed spawn_entity
     return LaunchDescription([
         rsp,
         gazebo,
         delayed_spawn_entity,
+
+        delayed_spawn
     ])
