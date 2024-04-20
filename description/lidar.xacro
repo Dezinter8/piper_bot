@@ -33,13 +33,13 @@
         <sensor name="laser" type="ray">
             <pose> 0 0 0 0 0 0 </pose>
             <visualize>true</visualize>
-            <update_rate>6</update_rate> <!-- Scan frequency -->
+            <update_rate>6</update_rate>
             <ray>
                 <scan>
                     <horizontal>
-                        <samples>720</samples>
+                        <samples>666</samples> <!--  The physical LD14P lidar distance readings ranged from 662 to 672, but the average was 666.39   -->
                         <min_angle>0</min_angle>
-                        <max_angle>6.28</max_angle>
+                        <max_angle>6.283185307</max_angle>
                     </horizontal>
                 </scan>
                 <range>
@@ -52,7 +52,7 @@
                     <argument>~/out:=scan</argument>
                 </ros>
                 <output_type>sensor_msgs/LaserScan</output_type>
-                <frame_name>laser_frame</frame_name>
+                <frame_name>base_laser</frame_name>
             </plugin>
         </sensor>
     </gazebo>
