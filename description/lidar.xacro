@@ -46,6 +46,10 @@
                     <min>0.1</min>
                     <max>8</max>
                 </range>
+                <intensity>
+                    <min>0</min>
+                    <max>255</max>
+                </intensity>
             </ray>
             <plugin name="laser_controller" filename="libgazebo_ros_ray_sensor.so">
                 <ros>
