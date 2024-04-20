@@ -90,3 +90,31 @@ After launching gazebo simulation with pipe model inside, don't close the gazebo
 ```
 ros2 run gazebo_ros spawn_entity.py -topic robot_description -entity bit_name
 ```
+
+## Data coming out from robot
+
+### Wheels movement
+
+```
+ros2 topic echo /joint_states
+```
+
+position refers to wheel spins in radians, so how many times wheel make 360 from start.
+velocity refers to wheels rotation speed.
+
+You can also use this comand to see ros2_control interfaces for wheels:
+
+```
+ros2 control list_hardware_interfaces
+```
+
+### Accelerometer and gyroscope
+
+To view data from accelerometer and gyroscope use this comand:
+
+```
+ros2 topic echo /imu_plugin/out
+```
+
+linear_acceleration refers to accelerometer data.
+angular_velocity refers to gyroscope data.
