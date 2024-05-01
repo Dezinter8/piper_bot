@@ -14,7 +14,7 @@
 
             <!-- kinematics -->
             <wheel_separation>0.14</wheel_separation>
-            <wheel_diameter>0.06</wheel_diameter>
+            <wheel_diameter>0.08</wheel_diameter>
 
 
 
