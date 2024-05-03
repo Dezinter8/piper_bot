@@ -6,7 +6,7 @@
     <joint name="imu_joint" type="fixed">
         <parent link="chassis"/>
         <child link="imu_link"/>
-        <origin xyz="0 0 0.04"/>
+        <origin xyz="0 0 0.04" rpy="0 0 ${pi/2}"/>
     </joint>
 
     <link name="imu_link">
