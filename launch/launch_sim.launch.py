@@ -57,7 +57,7 @@ def generate_launch_description():
 
     # Delay the diff_drive and joint_broad by 1 second
     delayed_spawn = TimerAction(
-        period=1.0,  # Delay period in seconds
+        period=3.0,  # Delay period in seconds
         actions=[diff_drive_spawner,joint_broad_spawner]
     )
     
