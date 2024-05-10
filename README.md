@@ -1,120 +1,206 @@
-# Piper simulation
+ROS2 
 
-## Pre requirements
-
-- xacro
-- joint-state-publisher
-- gazebo
-
-Install those using:
-
+* UPDATE
 ```
-sudo apt-get update
-
-sudo apt install ros-humble-xacro ros-humble-joint-state-publisher-gui ros-humble-gazebo-ros-pkgs
-
-sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers ros-humble-gazebo-ros2-control
+    sudo apt update && sudo apt upgrade -y
 ```
 
-## Setup
-
-### Step 1 (workspace setup)
-
+* INSTALL NECESSARY APPS - GIT vsCODE PYTHON PIP
 ```
-cd ~
+	sudo apt install git idle3 python3-pip -y
 
-mkdir -p piper_ws/src
-
-cd piper_ws/src
-
-git clone https://github.com/Dezinter8/piper_bot.git
+	sudo snap install code -y 
 ```
 
-### Step 2 (build)
-
+* CHECK FOR UTF-8
 ```
-cd ~/piper_ws
-
-colcon build --symlink-install
+    locale
 ```
 
-### Step 3 - Run (Gazebo)
-
-1'st terminal (Robot) - Simulation
-
+* FIRST ENSURE THAT UBUNTU UNIVERSE REPOSITORY IS ENABLED
 ```
-cd ~/piper_ws
+    sudo apt install software-properties-common -y
 
-source install/setup.bash
-
-ros2 launch piper_bot launch_sim.launch.py world:=./src/piper_bot/worlds/pipe.world
+    sudo add-apt-repository universe
 ```
 
-2'nd terminal (Robot/Dev) - Controlling robot movement
-
+* ADD ROS 2 GPG KEY
 ```
-ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=/diff_cont/cmd_vel_unstamped
-```
+    sudo apt update && sudo apt install curl -y
 
-#### Moving the robot
-
-To move the robot remember that the terminal window used for 2'nd comand has to be an active window.
-
-Moving around:
-u i o
-j k l
-m , .
-
-#### Run (Production)
-
-```
-cd piper_ws/
-
-source install/setup.bash
-
-ros2 launch piper_bot rsp.launch.py
+    sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 ```
 
+* ADD REPOSITORY TO YOUR SOURCE LIST
 ```
-rviz2 -d src/piper_bot/config/view_bot.rviz
-```
-
-```
-ros2 run joint_state_publisher_gui joint_state_publisher_gui
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
 ```
 
-### Robot doesn't spawn
-
-After launching gazebo simulation with pipe model inside, don't close the gazebo window. Create new terminal and spawn robot manualy using this command:
-
+* INSTALL ROS 2 PACKAGES
 ```
-ros2 run gazebo_ros spawn_entity.py -topic robot_description -entity bit_name
-```
+    sudo apt update && sudo apt upgrade -y
 
-## Data coming out from robot
+    sudo apt install ros-humble-desktop -y
 
-### Wheels movement
-
-```
-ros2 topic echo /joint_states
+	sudo apt install python3-colcon-common-extensions -y
 ```
 
-position refers to wheel spins in radians, so how many times wheel make 360 from start.
-velocity refers to wheels rotation speed.
+Environment setup 
 
-You can also use this comand to see ros2_control interfaces for wheels:
-
+* UPDATE
 ```
-ros2 control list_hardware_interfaces
+    sudo apt update && sudo apt upgrade -y
 ```
 
-### Accelerometer and gyroscope
-
-To view data from accelerometer and gyroscope use this comand:
-
+* INSTALL ROS PACKAGES
 ```
-ros2 topic echo /imu_plugin/out
+	sudo apt install ros-humble-xacro ros-humble-joint-state-publisher-gui ros-humble-gazebo-ros-pkgs -y
+
+	sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers ros-humble-gazebo-ros2-control -y
 ```
 
-linear_acceleration refers to accelerometer data.
-angular_velocity refers to gyroscope data.
+* ADD SOURCE TO YOUR BASHRC
+```
+	 echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+
+   	 source /opt/ros/humble/setup.bash
+
+   	 ros2
+```
+
+* INSTALL VIDEO FOR LINUX
+```
+	sudo apt install v4l-utils -y
+```
+
+* CHECK V4L COMPLIANCE
+```
+	v4l2-compliance
+```
+
+* CHECK VIDEO FORMATS OF YOUR CAMERA
+```
+	v4l2-ctl --list-formats-ext --device /dev/video0
+```
+
+* OPTIONAL - CHANGE RESOLUTION AND VIDEO FORMAT
+```
+	v4l2-ctl --device=/dev/video0 --set-fmt-video=width=640,height=480,pixelformat=YUYV
+```
+
+* INSTALL ROS CAMERA V4L PACKAGES
+```
+	sudo apt install ros-${ROS_DISTRO}-v4l2-camera -y
+
+	sudo apt install ros-${ROS_DISTRO}-image-transport-plugins
+```
+
+* GIT CLONE PROJECT BOT AND BUILD
+```
+   	cd ~
+
+   	mkdir -p piper_ws/src
+
+   	cd piper_ws/src
+
+   	git clone https://github.com/Dezinter8/piper_bot.git
+
+   	 cd ~/piper_ws
+
+   	 colcon build --symlink-install
+```
+
+* GIT CLONE CAMERA CTRL APP AND BUILD
+```
+   	 cd ~
+
+   	 mkdir -p piper_bot_camera
+
+   	 cd piper_bot_camera
+
+	 git clone --branch ${ROS_DISTRO} https://gitlab.com/boldhearts/ros2_v4l2_camera.git src/v4l2_camera
+
+	 sudo apt install python3-rosdep2
+
+	 rosdep update
+
+	 rosdep install --from-paths src/v4l2_camera --ignore-src -r -y
+
+	 colcon build
+```
+
+	 
+Project commands
+
+
+* Run simulation (Gazebo) - BOT 
+```
+   	cd ~/piper_ws
+
+   	source install/setup.bash
+
+   	ros2 launch piper_bot launch_sim.launch.py world:=./src/piper_bot/worlds/pipe.world
+```
+
+* Run gui application - DEV 
+```
+   	 cd ~/piper_dev/Piper_Gui
+
+	 source venv/bin/activate
+
+	python3 main.py
+```
+
+* Controll robot movement - BOT / DEV 
+```
+   	 ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=/diff_cont/cmd_vel_unstamped
+```
+
+* Running camera node - BOT 
+```
+	ros2 run v4l2_camera v4l2_camera_node
+```
+
+* Reciving and displaying photos - DEV
+```
+	ros2 run rqt_image_view rqt_image_view
+```
+
+* Display ros2 nodes - BOT / DEV
+```
+	ros2 node list
+```
+
+* Display ros2 topic list  - BOT / DEV
+```
+	ros2 topic list
+```
+
+* Display ros2 topic message - BOT / DEV
+```
+	ros2 topic echo <topic name>
+```
+
+* Display ros2 detailed topic info - BOT / DEV
+```
+	ros2 topic info <topic name>
+
+	ros2 interface show <Type:>
+```
+
+QT Designer
+
+* Converting ui file to python
+```
+	pyuic5 mainwindow.ui -o MainWindow.py
+```
+
+* Converting resources to python
+```
+	pyrcc5 resources.qrc -o resources_rc.py
+```
+
+
+
+
+
