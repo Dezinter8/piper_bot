@@ -151,18 +151,28 @@
     </model>
 
     <state world_name='default'>
-      <sim_time>706 98000000</sim_time>
-      <real_time>255 83142703</real_time>
-      <wall_time>1712966583 82501481</wall_time>
-      <iterations>254159</iterations>
+      <sim_time>713 552000000</sim_time>
+      <real_time>8 130431872</real_time>
+      <wall_time>1715736545 301761848</wall_time>
+      <iterations>7454</iterations>
       <model name='Pipe'>
-        <pose>13.427 -0.037626 -2e-06 -0 -0 -0.000443</pose>
+        <pose>13.427 -0.037763 -5e-06 2e-06 0 -0.000458</pose>
         <scale>1 1 1</scale>
         <link name='link_0'>
-          <pose>13.427 -0.037626 -2e-06 -0 -0 -0.000443</pose>
+          <pose>13.427 -0.037763 -5e-06 2e-06 0 -0.000458</pose>
           <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>-0.043559 0.213083 1.47286 2.31319 0.294321 -0.205973</acceleration>
-          <wrench>-0.261355 1.2785 8.83717 0 -0 0</wrench>
+          <acceleration>-0.040625 -0.209905 -4.88011 2.46705 0.119736 -0.025144</acceleration>
+          <wrench>-0.243749 -1.25943 -29.2807 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='Pipe_curved'>
+        <pose>-0.013689 10.23 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link_0'>
+          <pose>-0.013689 10.23 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='ground_plane'>
@@ -181,10 +191,70 @@
     </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>-3.48513 -0.517692 1.09188 0 0.091642 0.016189</pose>
+        <pose>-1.645 -4.40796 2.56865 0 0.307642 1.34019</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
     </gui>
+
+    <model name='Pipe_curved'>
+      <link name='link_0'>
+        <inertial>
+          <mass>10</mass>
+          <inertia>
+            <ixx>283</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>32</iyy>
+            <iyz>0</iyz>
+            <izz>283</izz>
+          </inertia>
+          <pose>0 0 0 0 -0 0</pose>
+        </inertial>
+        <pose>0 2e-06 0 0 -0 0</pose>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>../meshes/Pipe_curved.stl</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </visual>
+        <collision name='collision'>
+          <laser_retro>240</laser_retro>
+          <max_contacts>10</max_contacts>
+          <geometry>
+            <mesh>
+              <uri>../meshes/Pipe_curved.stl</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>0</static>
+      <allow_auto_disable>1</allow_auto_disable>
+      <pose>0.007951 11.3438 0 0 -0 0</pose>
+    </model>
   </world>
 </sdf>
