@@ -6,7 +6,6 @@ def generate_launch_description():
         ExecuteProcess(
             cmd=['micro-ros-agent', 'serial', '--dev', '/dev/ttyACM0', 'baudrate=115200'],
             name='micro_ros_agent',
-            output='screen'
         )
     ])
     
