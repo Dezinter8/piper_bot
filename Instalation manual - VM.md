@@ -1,6 +1,7 @@
-PiPER project instalation manual
+# PiPER project instalation manual
+Here are the installation instructions for the virtual layer of the project.
 
-* Part 0 - VM's
+## Part 0 - VM's
 
 Prepare two virtual machines based on Ubuntu 22.04 LTS.
 
@@ -16,7 +17,7 @@ Machine settings:
 3. USB - Controller USB.3
 
 
-* PART 1 - VM1 (ubuntu - BOT)
+## PART 1 - VM1 (ubuntu - BOT)
 
 1. Update your system
 
@@ -178,7 +179,7 @@ colcon build
 
 
 
-* PART 2 - VM2 (ubuntu - DEV)
+## PART 2 - VM2 (ubuntu - DEV)
 
 1. Update your system
 
@@ -298,7 +299,7 @@ sudo apt install ros-${ROS_DISTRO}-image-transport-plugins
 
 
 
-* PART 3 - Project commands
+## PART 3 - Project commands
 
 1. Run simulation (Gazebo) - BOT 
 ```
@@ -357,7 +358,7 @@ ros2 topic info <topic name>
 ros2 interface show <Type:>
 ```
 
-* QT Designer
+## QT Designer
 
 1. Converting ui file to python
 ```
