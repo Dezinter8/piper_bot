@@ -277,12 +277,12 @@ snap connect micro-ros-agent:serial-port snapd:pico
 ```
 ### PiPER STARTUP SERVICE
 
-1. Tworzenie pliku serwisu:
+1. Create a service file
 ```
 sudo nano /etc/systemd/system/ros2_launch.service
 ```
 
-2. Plik `ros2_launch.service`:
+2. File `ros2_launch.service`
 
 ```
 [Unit]
@@ -297,29 +297,28 @@ ExecStart=/bin/bash -c '. /opt/ros/humble/setup.bash; ros2 launch /home/bot/pipe
 WantedBy=multi-user.target
 ```
 
-Ten plik zawiera definicję usługi, która uruchamia skrypt ROS 2 launch MasterLaunch.py po starcie systemu. Upewnij się, że ścieżki są poprawne i odpowiadają Twojej konfiguracji.
+This file contains the definition of the service that runs the ROS 2 launch MasterLaunch.py script after system startup. Make sure the paths are correct and match your configuration.
 
-3. Włączanie usługi uruchomieniowej dla PiPER:
+3. Enabling the startup service for PiPER
 
 ```
 sudo systemctl daemon-reload
 ```
-* To polecenie przeprowadza ponowne wczytanie konfiguracji systemd, co jest potrzebne po dodaniu nowego pliku serwisu.
+* This command performs a reload of the systemd configuration, which is needed after adding a new service file.
 
 ```
 sudo systemctl enable ros2_launch.service
 ```
-* To polecenie włącza usługę ros2_launch tak, aby uruchamiała się automatycznie po starcie systemu.
+* This command enables the ros2_launch service so that it starts automatically when the system boots.
 
 ```
 sudo systemctl start ros2_launch.service
 ```
-* To polecenie natychmiastowo uruchamia usługę ros2_launch, bez konieczności restartowania systemu.
-
+* This command immediately starts the ros2_launch service, without rebooting the system.
 ```
 journalctl -u ros2_launch.service
 ```
-* To polecenie wyświetli wszystkie wpisy związane z usługą `ros2_launch.service`. 
+* This command will display all entries related to the `ros2_launch.service` service.
 
 ## PART 2 - DEV
 
