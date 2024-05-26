@@ -165,6 +165,14 @@ cd ~/ldlidar_ros2_ws
 colcon build
 ```
 
+5. Add environment variables
+
+```
+echo "source ~/ldlidar_ros2_ws/install/local_setup.bash" >> ~/.bashrc
+
+source ~/.bashrc
+```
+
 ### Pico motors node {#Pico_motors_BOT}
 
 1. Install micro-ros agent
@@ -199,8 +207,13 @@ micro-ros-agent serial --dev /dev/serial/by-id/usb-Raspberry_Pi_Pico_E6614103E71
 
 1. Installation:
 
+Requirement:
 ```
-cd ~/piperws/src
+pip install pyserial
+```
+
+```
+cd ~/piper_ws/src
 
 git clone https://github.com/Dezinter8/pico_connection.git
 
