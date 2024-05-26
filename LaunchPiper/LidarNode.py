@@ -1,14 +1,13 @@
 from launch import LaunchDescription
-from launch_ros.actions import Node
+from launch.actions import ExecuteProcess
 
 def generate_launch_description():
     return LaunchDescription([
-        Node(
-            package='ldlidar_sl_ros2',
-            executable='ld14p',
-            name='ld14p_node',
+        ExecuteProcess(
+            cmd=['ros2', 'launch', 'ldlidar_sl_ros2', 'ld14p.launch.py'],
+            name='ldlidar',
         )
     ])
-    
+
 # Uruchomienie
 # ros2 launch path/to/your/launch/file/LidarNode.py

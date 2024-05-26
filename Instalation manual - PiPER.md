@@ -238,6 +238,14 @@ source install/setup.bash
 ros2 run pico_connection serial_publisher
 ```
 
+4. Source
+
+```
+echo "source ~/piper_ws/install/setup.bash" >> ~/.bashrc
+
+source ~/.bashrc
+```
+
 ### PiPER STARTUP SERVICE {#Startup_BOT}
 
 Disable all nodes created earlier

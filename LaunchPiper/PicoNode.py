@@ -4,7 +4,7 @@ from launch.actions import ExecuteProcess
 def generate_launch_description():
     return LaunchDescription([
         ExecuteProcess(
-            cmd=['micro-ros-agent', 'serial', '--dev', '/dev/ttyACM0', 'baudrate=115200'],
+            cmd=['micro-ros-agent', 'serial', '--dev', '/dev/serial/by-id/usb-Raspberry_Pi_Pico_E6614103E7114938-if00', 'baudrate=115200'],
             name='micro_ros_agent',
         )
     ])
