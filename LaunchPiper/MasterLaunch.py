@@ -21,6 +21,9 @@ def generate_launch_description():
                 IncludeLaunchDescription(
                     PythonLaunchDescriptionSource(os.path.join(current_dir, 'LidarNode.py'))
                 ),
+                IncludeLaunchDescription(
+                    PythonLaunchDescriptionSource(os.path.join(current_dir, 'PicoConnectionNode.py'))
+                ),
             ]
         )
     ])
