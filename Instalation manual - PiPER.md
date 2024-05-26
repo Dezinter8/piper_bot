@@ -1,9 +1,25 @@
-
 # PiPER instalation manual
 
 Here are the installation instructions for the physical layer of the project.
 
-## PART 1 - BOT
+# Contents
+
+- [Bot](#BOT)
+  - [Ros installation](#Ros_BOT)
+  - [Video node](#Video_BOT)
+  - [Lidar node](#lidar_BOT)
+  - [Pico motors node](#Pico_motors_BOT)
+  - [Pico imu node](#Pico_imu_BOT)
+  - [PiPER STARTUP SERVICE](#Startup_BOT)
+- [Dev](#DEV)
+  - [Ros installation](#Ros_DEV)
+  - [Gui](#Gui_DEV)
+  - [Camera](#Camera_DEV)
+- [Project commands](#Project_commands)
+
+## PART 1 - BOT {#BOT}
+
+### Ros installation {#Ros_BOT}
 
 1. Update your system
 
@@ -11,14 +27,10 @@ Here are the installation instructions for the physical layer of the project.
 sudo apt update && sudo apt upgrade -y
 ```
 
-2. Install necessary apps - GIT nano vscode PYTHON PIP
+2. Install necessary apps - GIT nano PYTHON PIP
 
 ```
 sudo apt install git nano idle3 python3-pip -y
-```
-
-```
-sudo snap install code --classic
 ```
 
 3. Check that 'UTF-8' is present in each entry
@@ -31,9 +43,7 @@ locale
 
 ```
 sudo apt install software-properties-common -y
-```
 
-```
 sudo add-apt-repository universe
 ```
 
@@ -41,9 +51,7 @@ sudo add-apt-repository universe
 
 ```
 sudo apt update && sudo apt install curl -y
-```
 
-```
 sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 ```
 
@@ -57,13 +65,9 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-a
 
 ```
 sudo apt update && sudo apt upgrade -y
-```
 
-```
 sudo apt install ros-humble-desktop -y
-```
 
-```
 sudo apt install python3-colcon-common-extensions -y
 ```
 
@@ -83,30 +87,25 @@ source /opt/ros/humble/setup.bash
 ros2
 ```
 
-10. Install video for linux
+### Video node {#Video_BOT}
+
+1. Install video for linux
 
 ```
 sudo apt install v4l-utils -y
+
+sudo apt install ros-${ROS_DISTRO}-v4l2-camera -y
+
+sudo apt install ros-${ROS_DISTRO}-image-transport-plugins
 ```
 
-11. Change resolution and video format
+2. Change resolution and video format
 
 ```
 v4l2-ctl --device=/dev/video0 --set-fmt-video=width=640,height=480,pixelformat=YUYV
 ```
 
-12. Install ros camera v4l packages
-
-```
-sudo apt install ros-${ROS_DISTRO}-v4l2-camera -y
-```
-
-```
-sudo apt install ros-${ROS_DISTRO}-image-transport-plugins
-```
-
-
-13. Git clone camera ctrl app and build
+3. Git clone camera ctrl app and build
 
 ```
 cd ~
@@ -126,122 +125,49 @@ rosdep install --from-paths src/v4l2_camera --ignore-src -r -y
 colcon build
 ```
 
-14. Git clone lidar ros2 project
+### Lidar node {#lidar_BOT}
+
+1. Git clone lidar ros2 project
 
 ```
 cd ~
 
-mkdir -p ldlidar_ws/src
+mkdir -p ldlidar_ros2_ws/src
 
-cd ldlidar_ws/src
+cd ldlidar_ros2_ws/src
 
-sudo git clone  https://github.com/ldrobotSensorTeam/ldlidar_sl_ros2.git
-
-```
-
-
-15. Change privlages on lidar connection 
+git clone  https://github.com/ldrobotSensorTeam/ldlidar_sl_ros2.git
 
 ```
-ls /dev/ttyUSB*
+
+2. Change privlages on lidar connection
+
 ```
+sudo chmod 777 /dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0
+```
+
+3. Find port_name and adjust it
+
+Find in `ld14p.launch.py` port name `'port_name': '/dev/ttyUSB??'`
+Replace current name with correct one
+
+{'port_name': '/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0'},
+
+```
+sudo nano ~/ldlidar_ros2_ws/src/ldlidar_sl_ros2/launch/ld14p.launch.py
+```
+
+4. Build lidar ros2 project
 
 ```
 cd ~/ldlidar_ros2_ws
 
-sudo chmod 777 /dev/ttyUSB0
-```
-
-16. Find port_name and adjust it
-
-Find in `ld14p.launch.py` port name ` 'port_name': '/dev/ttyUSB??' `
-Replace current name with correct one (name schould be find using command ` ls /dev/ttyUSB* ` )
-
-```
-ls /dev/ttyUSB* 
-```
-``` 
-sudo nano ~/ldlidar_ws/src/ldlidar_sl_ros2/launch/ld14p.launch.py 
-```
-
-17. Build lidar ros2 project
-
-```
-cd ~/ldlidar_ws
-
 colcon build
 ```
 
+### Pico motors node {#Pico_motors_BOT}
 
-18. Install necessary micro ros packages
-
-```
-sudo apt install build-essential cmake gcc-arm-none-eabi libnewlib-arm-none-eabi doxygen python3
-```
-
-19. Create pico workspace
-
-```
-cd ~
-
-mkdir pico
-
-cd pico
-```
-
-
-20. Git clone micro ros repo's
-
-```
-git clone --recurse-submodules https://github.com/raspberrypi/pico-sdk.git
-```
-
-```
-git clone https://github.com/micro-ROS/micro_ros_raspberrypi_pico_sdk.git
-```
-
-21. Using vscode prepare workspace
-
-```
-cd ~/pico/micro_ros_raspberrypi_pico_sdk
-
-mkdir .vscode
-
-touch .vscode/settings.json
-```
-
-
-22. Set up .json file in correct way
-
-Add to .json file in .vscode directory
-
-```
-nano .vscode/settings.json
-```
-
-This lines of code
-
-```
-{
-    "cmake.configureEnvironment": {
-        "PICO_SDK_PATH": "/home/bot/pico/pico-sdk",
-    },
-}
-```
-
-23. Build project using vscode
-
-```
-cd ~/pico/micro_ros_raspberrypi_pico_sdk
-
-code .
-```
-
-Choose `gcc-arm-none-eabi`
-
-If there is no message use this `Ctr + Shift + p` and choose `CMake: Build` option. Your project schould build itself.
-
-24.	Install micro-ros agent
+1. Install micro-ros agent
 
 ```
 sudo snap install micro-ros-agent
@@ -251,38 +177,65 @@ sudo snap set core experimental.hotplug=true
 sudo systemctl restart snapd
 ```
 
-
-25. Flashing raspberry pico
-
-Check for .uf2 file in `micro_ros_raspberrypi_pico_sdk/build` directory. If it doesn't exist build procedure wasn't succesful.
-
-```
-cd ~/pico/micro_ros_raspberrypi_pico_sdk/build
-
-ls
-```
-
-Connect PICO to your computer while holding down the `BOOTSEL` button, when it detects the PICO, copy the `.uf2` file there. There will be an automatic restart of the PICO. 
-
-26. Pico testing
+2. Pico testing
 
 ```
 snap interface serial-port
 ```
 
-27. Creating connection with pico 
+3. Creating connection with pico
 
 ```
 snap connect micro-ros-agent:serial-port snapd:pico
 ```
-### PiPER STARTUP SERVICE
+
+4. Launching micro ros
+
+```
+micro-ros-agent serial --dev /dev/serial/by-id/usb-Raspberry_Pi_Pico_E6614103E7114938-if00 baudrate=115200
+```
+
+### Pico imu node {#Pico_imu_BOT}
+
+1. Installation:
+
+```
+cd ~/piperws/src
+
+git clone https://github.com/Dezinter8/pico_connection.git
+
+cd ../
+
+colcon build --symlink-install
+```
+
+2. Granting permissions to the serial port:
+
+```
+sudo chmod 777 /dev/serial/by-id/usb-Raspberry_Pi_Pico_E660D4A0A772982F-if00
+```
+
+3. Project launch
+
+```
+cd ~/piperws
+
+source install/setup.bash
+
+ros2 run pico_connection serial_publisher
+```
+
+### PiPER STARTUP SERVICE {#Startup_BOT}
+
+Disable all nodes created earlier
 
 1. Create a service file
+
 ```
 sudo nano /etc/systemd/system/ros2_launch.service
 ```
 
-2. File `ros2_launch.service`
+2. Paste the following into file `ros2_launch.service`
 
 ```
 [Unit]
@@ -304,23 +257,50 @@ This file contains the definition of the service that runs the ROS 2 launch Mast
 ```
 sudo systemctl daemon-reload
 ```
-* This command performs a reload of the systemd configuration, which is needed after adding a new service file.
+
+- This command performs a reload of the systemd configuration, which is needed after adding a new service file.
 
 ```
 sudo systemctl enable ros2_launch.service
 ```
-* This command enables the ros2_launch service so that it starts automatically when the system boots.
+
+- This command enables the ros2_launch service so that it starts automatically when the system boots.
 
 ```
 sudo systemctl start ros2_launch.service
 ```
-* This command immediately starts the ros2_launch service, without rebooting the system.
+
+- This command immediately starts the ros2_launch service, without rebooting the system.
+
 ```
 journalctl -u ros2_launch.service
 ```
-* This command will display all entries related to the `ros2_launch.service` service.
 
-## PART 2 - DEV
+- This command will display all entries related to the `ros2_launch.service` service.
+
+4. Create a new rules file in /etc/udev/rules.d/ to grant permissions to serial ports automatically:
+
+```
+sudo nano /etc/udev/rules.d/99-usb-serial.rules
+```
+
+5. Add the following content, gives permissions to both pico and lidar:
+
+```
+SUBSYSTEM=="tty", ATTRS{serial}=="E660D4A0A772982F", MODE="0666"
+SUBSYSTEM=="tty", ATTRS{serial}=="E6614103E7114938", MODE="0666"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="0001", MODE="0666", SYMLINK+="my_serial"
+```
+
+6. After creating the rules file, you need to load the new udev configuration and apply the changes:
+
+```
+sudo udevadm control --reload-rules && sudo udevadm trigger
+```
+
+## PART 2 - DEV {#DEV}
+
+### Ros installation {#Ros_DEV}
 
 1. Update your system
 
@@ -328,39 +308,31 @@ journalctl -u ros2_launch.service
 sudo apt update && sudo apt upgrade -y
 ```
 
-2. Install necessary apps - GIT vscode PYTHON PIP
+2. Install necessary apps - GIT nano PYTHON PIP
 
 ```
-sudo apt install git idle3 python3-pip -y
+sudo apt install git nano idle3 python3-pip -y
 ```
 
-```
-sudo snap install code -y 
-```
-
-3. Check for utf-8
+3. Check that 'UTF-8' is present in each entry
 
 ```
 locale
 ```
 
-4. First ensure that ubuntu universe repository is enabled
+4. Ensure that ubuntu universe repository is enabled
 
 ```
 sudo apt install software-properties-common -y
-```
 
-```
 sudo add-apt-repository universe
 ```
 
-5. Add ros 2 gpg key
+5. Add ros2 gpg key
 
 ```
 sudo apt update && sudo apt install curl -y
-```
 
-```
 sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 ```
 
@@ -374,13 +346,9 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-a
 
 ```
 sudo apt update && sudo apt upgrade -y
-```
 
-```
 sudo apt install ros-humble-desktop -y
-```
 
-```
 sudo apt install python3-colcon-common-extensions -y
 ```
 
@@ -400,53 +368,49 @@ source /opt/ros/humble/setup.bash
 ros2
 ```
 
-10. Git clone project gui
+### Gui {#Gui_DEV}
+
+1. Git clone project gui
 
 ```
 cd ~
 
-mkdir -p piper_dev
-
-cd piper_dev
-
 git clone https://github.com/Dezinter8/Piper_Gui
 ```
 
-11. Create python virtual env
+2. Create python virtual env
 
 ```
-sudo apt update && sudo apt install  python3-virtualenv -y
+sudo apt update && sudo apt install python3-virtualenv -y
 
-cd ~/piper_dev/Piper_Gui
+cd ~/Piper_Gui
 
 virtualenv venv
- 
+
 source venv/bin/activate
 
-pip install PyQt5 PyQt5-tools vtk opencv-python-headless
+pip install PyQt5 vtk opencv-python-headless
 ```
 
-12. Install camera packages
+### Camera {#Camera_DEV}
+
+1. Install camera packages
 
 ```
 sudo apt install ros-${ROS_DISTRO}-rqt-image-view -y
-```
 
-```
 sudo apt install ros-${ROS_DISTRO}-image-transport-plugins
 ```
 
+## PART 3 -- Project commands (Not necessary) {#Project_commands}
 
-## PART 3 -- Project commands
-
-1. Start camera node - BOT 
+1. Start camera node - BOT
 
 ```
 source .bashrc
 
 ros2 run v4l2_camera v4l2_camera_node
 ```
-
 
 2. Start lidar node - BOT
 
@@ -460,58 +424,26 @@ ros2 launch ldlidar_sl_ros2 ld14p.launch.py
 
 3. Start pico node - BOT
 
-
 ```
 source .bashrc
 
-micro-ros-agent serial --dev /dev/ttyACM0 baudrate=115200
+micro-ros-agent serial --dev /dev/serial/by-id/usb-Raspberry_Pi_Pico_E6614103E7114938-if00 baudrate=115200
 ```
-### After running the command, it is necessary to unplug and plug PICO again.
 
-3. Run gui application - DEV 
+After running the command, it is necessary to unplug and plug PICO again.
+
+3. Run gui application - DEV
+
 ```
 cd ~/piper_dev/Piper_Gui
 
-source .bashrc
-
 source venv/bin/activate
-
-ros2 run rqt_image_view rqt_image_view
 
 python3 main.py
 ```
 
+4. Controll robot movement from simulation- BOT / DEV
 
-4. Controll robot movement - BOT / DEV 
 ```
 ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=/diff_cont/cmd_vel_unstamped
 ```
-
-
-5. Display ros2 nodes - BOT / DEV
-```
-ros2 node list
-```
-
-6. Display ros2 topic list  - BOT / DEV
-```
-ros2 topic list
-```
-
-7. Display ros2 topic message - BOT / DEV
-```
-ros2 topic echo <topic name>
-```
-
-8. Display ros2 detailed topic info - BOT / DEV
-
-```
-ros2 topic info <topic name>
-```
-```
-ros2 interface show <Type:>
-```
-
-
-
-
