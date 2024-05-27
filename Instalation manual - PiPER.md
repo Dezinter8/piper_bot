@@ -260,15 +260,20 @@ sudo nano /etc/systemd/system/ros2_launch.service
 
 ```
 [Unit]
-Description=Uruchamia skrypt ROS 2 launch przy starcie systemu
+Description=ROS2 Launch Script
+After=network.target
 
 [Service]
 Type=simple
-ExecStart=/bin/bash -c '. /opt/ros/humble/setup.bash; ros2 launch /home/bot/piper_ws/src/piper_bot/LaunchPiper/MasterLaunch.py'
+User=piper
+Environment="HOME=/home/piper"
+ExecStart=/bin/bash -c 'source /opt/ros/humble/setup.bash && source /home/piper/ldlidar_ros2_ws/install/local>
+
 
 
 [Install]
 WantedBy=multi-user.target
+
 ```
 
 This file contains the definition of the service that runs the ROS 2 launch MasterLaunch.py script after system startup. Make sure the paths are correct and match your configuration.
@@ -318,6 +323,53 @@ SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{seria
 ```
 sudo udevadm control --reload-rules && sudo udevadm trigger
 ```
+
+7. To make sure micro-ros-agent can access pico do the following:
+
+```
+sudo nano /usr/local/bin/micro-ros-snap-connect.sh
+```
+
+```
+#!/bin/bash
+snap connect micro-ros-agent:serial-port snapd:pico
+snap connect micro-ros-agent:serial-port snapd:pico-1
+```
+
+```
+sudo chmod +x /usr/local/bin/micro-ros-snap-connect.sh
+```
+
+8. Now add the service to systemd.
+
+```
+sudo nano /etc/systemd/system/micro-ros-snap-connect.service
+```
+
+```
+[Unit]
+Description=Connect micro-ROS agent to serial port on startup
+After=network.target snapd.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/micro-ros-snap-connect.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```
+sudo systemctl daemon-reload
+
+sudo systemctl enable micro-ros-snap-connect.service
+
+sudo systemctl start micro-ros-snap-connect.service
+```
+
+
+
 
 ## PART 2 - DEV {#DEV}
 

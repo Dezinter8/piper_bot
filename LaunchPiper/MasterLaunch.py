@@ -10,7 +10,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         TimerAction(
-            period=10.0,  # 10-second delay
+            period=1.0,  # 10-second delay
             actions=[
                 IncludeLaunchDescription(
                     PythonLaunchDescriptionSource(os.path.join(current_dir, 'CameraNode.py'))
