@@ -19,6 +19,8 @@ Here are the installation instructions for the physical layer of the project.
 
 ## PART 1 - BOT {#BOT}
 
+Tested on Ubuntu 22.04:
+
 ### Ros installation {#Ros_BOT}
 
 1. Update your system
@@ -208,6 +210,7 @@ micro-ros-agent serial --dev /dev/serial/by-id/usb-Raspberry_Pi_Pico_E6614103E71
 1. Installation:
 
 Requirement:
+
 ```
 pip install pyserial
 ```
@@ -368,10 +371,9 @@ sudo systemctl enable micro-ros-snap-connect.service
 sudo systemctl start micro-ros-snap-connect.service
 ```
 
-
-
-
 ## PART 2 - DEV {#DEV}
+
+Tested on Ubuntu 22.04:
 
 ### Ros installation {#Ros_DEV}
 
@@ -477,25 +479,31 @@ sudo apt install ros-${ROS_DISTRO}-image-transport-plugins
 
 ## PART 3 -- Project commands (Not necessary) {#Project_commands}
 
-1. Start camera node - BOT
+ssh connection:
+Login: piper
+password: 12345
+
+1. Master launch - Bot
 
 ```
-source .bashrc
+ros2 launch ~/piper_ws/src/piper_bot/LaunchPiper/MasterLaunch.py
+```
 
+Micro-ros-agent probably won't start publishing wheel data. you need to unplug and plug in the pico (from the bottom shelf).
+
+2. Start camera node - BOT
+
+```
 ros2 run v4l2_camera v4l2_camera_node
 ```
 
-2. Start lidar node - BOT
+3. Start lidar node - BOT
 
 ```
-cd ~/ldlidar_ros2_ws
-
-source install/local_setup.bash
-
 ros2 launch ldlidar_sl_ros2 ld14p.launch.py
 ```
 
-3. Start pico node - BOT
+4. Start pico motor node - BOT
 
 ```
 source .bashrc
@@ -503,9 +511,19 @@ source .bashrc
 micro-ros-agent serial --dev /dev/serial/by-id/usb-Raspberry_Pi_Pico_E6614103E7114938-if00 baudrate=115200
 ```
 
-After running the command, it is necessary to unplug and plug PICO again.
+Micro-ros-agent probably won't start publishing wheel data. you need to unplug and plug in the pico (from the bottom shelf).
 
-3. Run gui application - DEV
+5. Start pico imu node - BOT
+
+```
+cd ~/piperws
+
+source install/setup.bash
+
+ros2 run pico_connection serial_publisher
+```
+
+6. Run gui application - DEV
 
 ```
 cd ~/piper_dev/Piper_Gui
@@ -515,7 +533,7 @@ source venv/bin/activate
 python3 main.py
 ```
 
-4. Controll robot movement from simulation- BOT / DEV
+7. Controll simulated robot movement- BOT / DEV
 
 ```
 ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r /cmd_vel:=/diff_cont/cmd_vel_unstamped
