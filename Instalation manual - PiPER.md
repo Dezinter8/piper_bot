@@ -13,8 +13,8 @@ Here are the installation instructions for the physical layer of the project.
   - [PiPER STARTUP SERVICE](#Startup_BOT)
 - [Dev](#DEV)
   - [Ros installation](#Ros_DEV)
-  - [Gui](#Gui_DEV)
   - [Camera](#Camera_DEV)
+  - [Gui](#Gui_DEV)
 - [Project commands](#Project_commands)
 
 ## PART 1 - BOT {#BOT}
@@ -316,9 +316,9 @@ sudo nano /etc/udev/rules.d/99-usb-serial.rules
 5. Add the following content, gives permissions to both pico and lidar:
 
 ```
-SUBSYSTEM=="tty", ATTRS{serial}=="E660D4A0A772982F", MODE="0666"
-SUBSYSTEM=="tty", ATTRS{serial}=="E6614103E7114938", MODE="0666"
-SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="0001", MODE="0666", SYMLINK+="my_serial"
+SUBSYSTEM=="tty", ATTRS{serial}=="E660D4A0A772982F", MODE="0777"
+SUBSYSTEM=="tty", ATTRS{serial}=="E6614103E7114938", MODE="0777"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ATTRS{serial}=="0001", MODE="0777", SYMLINK+="my_serial"
 ```
 
 6. After creating the rules file, you need to load the new udev configuration and apply the changes:
@@ -389,7 +389,7 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install git nano idle3 python3-pip -y
 ```
 
-3. Check that 'UTF-8' is present in each entry
+3. Check that 'UTF-8' is present
 
 ```
 locale
@@ -439,8 +439,22 @@ sudo apt update && sudo apt upgrade -y
 echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 
 source /opt/ros/humble/setup.bash
+```
 
+10. Test installation
+
+```
 ros2
+```
+
+### Camera {#Camera_DEV}
+
+1. Install camera packages
+
+```
+sudo apt install ros-${ROS_DISTRO}-rqt-image-view -y
+
+sudo apt install ros-${ROS_DISTRO}-image-transport-plugins
 ```
 
 ### Gui {#Gui_DEV}
@@ -460,6 +474,8 @@ sudo apt update && sudo apt install python3-virtualenv -y
 
 cd ~/Piper_Gui
 
+git checkout Piper_bot
+
 virtualenv venv
 
 source venv/bin/activate
@@ -467,14 +483,10 @@ source venv/bin/activate
 pip install PyQt5 vtk opencv-python-headless
 ```
 
-### Camera {#Camera_DEV}
-
-1. Install camera packages
+3. Start the application
 
 ```
-sudo apt install ros-${ROS_DISTRO}-rqt-image-view -y
-
-sudo apt install ros-${ROS_DISTRO}-image-transport-plugins
+python main.py
 ```
 
 ## PART 3 -- Project commands (Not necessary) {#Project_commands}
@@ -484,6 +496,8 @@ Login: piper
 password: 12345
 
 1. Master launch - Bot
+
+Use this command to run all the nodes at once:
 
 ```
 ros2 launch ~/piper_ws/src/piper_bot/LaunchPiper/MasterLaunch.py
@@ -506,8 +520,6 @@ ros2 launch ldlidar_sl_ros2 ld14p.launch.py
 4. Start pico motor node - BOT
 
 ```
-source .bashrc
-
 micro-ros-agent serial --dev /dev/serial/by-id/usb-Raspberry_Pi_Pico_E6614103E7114938-if00 baudrate=115200
 ```
 
@@ -530,7 +542,7 @@ cd ~/piper_dev/Piper_Gui
 
 source venv/bin/activate
 
-python3 main.py
+python main.py
 ```
 
 7. Controll simulated robot movement- BOT / DEV
