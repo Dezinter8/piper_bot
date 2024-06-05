@@ -1,4 +1,10 @@
+# Piper real robot
+
+![Piper](./src/piper.png)
+
 # Piper simulation
+
+![Piper](./src/piper_simulation.png)
 
 ## Pre requirements
 
